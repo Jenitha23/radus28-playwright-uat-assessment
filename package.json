@@ -1,0 +1,22 @@
+{
+  "name": "radus28-playwright-uat-assessment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jenitha23/radus28-playwright-uat-assessment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jenitha23/radus28-playwright-uat-assessment/issues"
+  },
+  "homepage": "https://github.com/Jenitha23/radus28-playwright-uat-assessment#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.5.0"
+  }
+}
