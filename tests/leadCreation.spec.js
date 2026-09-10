@@ -261,6 +261,16 @@ test.describe('Radus28 CRM Lead Creation Tests', () => {
       page.locator('input[name="lastname"]')
     ).not.toBeVisible();
 
+    // Detail page should display the created lead — this is the second
+    // half of the brief's expected outcome ("...and the detail page
+    // should display"), not just "the form is gone". The lead's own Last
+    // Name should now appear as visible page content (record title/detail
+    // block). This was not confirmed on an authenticated run — re-check
+    // it against the live app if it fails.
+    await expect(
+      page.getByText(lastName, { exact: false }).first()
+    ).toBeVisible();
+
     console.log(
       `TC03 PASSED - Lead created successfully: ${firstName} ${lastName}`
     );
@@ -302,6 +312,12 @@ test.describe('Radus28 CRM Lead Creation Tests', () => {
     await expect(
       page.locator('input[name="lastname"]')
     ).not.toBeVisible();
+
+    // Same detail-page check as TC03 — proves the lead actually landed on
+    // its detail page rather than just that the form closed.
+    await expect(
+      page.getByText(lastName, { exact: false }).first()
+    ).toBeVisible();
 
     console.log(
       'TC04 PASSED - Lead created using mandatory Last Name'

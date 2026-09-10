@@ -30,10 +30,27 @@ test.describe('Radus28 CRM Login Tests', () => {
       VALID_PASSWORD
     );
 
-    await page.waitForLoadState('networkidle');
+    // `waitForLoadState('networkidle')` timed out on a live run — this app
+    // has persistent background network activity after login (polling/
+    // analytics, most likely) that never lets the network go fully idle,
+    // so 'networkidle' is not a reliable signal here. `domcontentloaded`
+    // fires quickly per the failure logs; the real gate is the login form
+    // actually disappearing, asserted below with a generous timeout to
+    // absorb any SPA render delay.
+    await page.waitForLoadState('domcontentloaded');
 
     // Login form should disappear after successful login
-    await expect(page.locator('#username')).not.toBeVisible();
+    await expect(page.locator('#username')).not.toBeVisible({ timeout: 15000 });
+
+    // Dashboard should load successfully — this is the expected outcome
+    // stated in the brief, not just "the login form is gone". Based on
+    // the accessibility snapshot captured during this assessment, the
+    // post-login view renders a "Dashboard" heading; verify this against
+    // the live app if it doesn't hold (this line was not confirmed on an
+    // authenticated run).
+    await expect(
+      page.getByRole('heading', { name: 'Dashboard' })
+    ).toBeVisible();
 
     console.log('TC01 PASSED - Login successful');
     console.log('Current URL:', page.url());
