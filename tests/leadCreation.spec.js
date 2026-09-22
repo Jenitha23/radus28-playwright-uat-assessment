@@ -355,4 +355,40 @@ test.describe('Radus28 CRM Lead Creation Tests', () => {
     );
   });
 
+  test('TC06 - Checking the comment post function', async ({ page }) => {
+  await login(page);
+  await navigateToLeads(page);
+ 
+  console.log('Opening a specific lead to comment on');
+  await page.getByRole('link', { name: 'MinimumLead1790056921484' }).first().click();
+  await page.waitForLoadState('networkidle');
+  await wait(page);
+
+  
+  const commentBox = page.getByPlaceholder('Post your comment here');
+  await expect(commentBox).toBeVisible();
+
+
+  const commentText = `Automation test comment - ${Date.now()}`;
+  await commentBox.fill(commentText);
+  await wait(page);
+
+  
+  const postButton = page.getByRole('button', { name: 'Post' });
+  await expect(postButton).toBeVisible();
+  await postButton.click();
+
+  
+  await page.waitForLoadState('networkidle');
+  await wait(page);
+
+  
+  const postedComment = page.getByText(commentText).first();
+  await expect(postedComment).toBeVisible();
+
+  console.log('TC06 PASSED - Comment posted successfully');
+});
+
+    
+
 });
